@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOVIES | GOD'S ANTENNA</title>
+    <link rel="stylesheet" href="antenna-styles.css">
+    <link rel="manifest" href="antenna-manifest.json">
+    <link rel="icon" href="images/antenna-logo.png">
+    <meta name="theme-color" content="#07152b">
+    <meta name="description" content="Welcome to God's Antenna">
+</head>
+<body>
+    <header class="site">
+        <div class="wrap navrow">
+            <a class="brand" href="antenna-index.html">
+                <img src="images/antenna-logo.png" alt="GOD'S ANTENNA LOGO">
+                <div>
+                    <b><small>GOD'S ANTENNA</small></b>
+                </div>
+            </a>
+            <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="antenna-index.html">Home</a></li><li><a href="antenna-about.html">About Us</a></li><li><a href="antenna-contact.html">Contact Us</a></li><li><a href="antenna-platforms.html">Our Platforms</a></li><li><a href="antenna-movies.html" class="active"><b>MOVIES</b></a></li><li><a href="antenna-openheavens.html">OPEN HEAVENS DEVOTIONAL</a></li><li><a href="antenna-games.html">GAMES</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+        
+  <div class="wrap">
+    <section class="player-card">
+      <header class="hero">
+          <div class="badge">GodsAntenna Cinema</div>
+          <h1>Christian Movies</h1>
+          <p class="subtitle">Watch faith-filled films on the site. Most titles here are Mount Zion movies shared from official YouTube pages.</p>
+      </header>
+      
+      <div class="video-frame">
+        <iframe id="player" title="Christian movie player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="now-playing">
+        <h2 id="playing-title">Loading movie...</h2>
+        <p id="playing-meta"></p>
+      </div>
+    </section>
+    
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search movies... e.g. High Calling, Abattoir, The Train" />
+    </div>
+
+    <div class="grid" id="movie-grid"></div>
+
+    <p class="note">
+      Tip for you (site owner): to add a new movie, open this file and add one item inside the <strong>movies</strong> list.
+      Paste either a full YouTube link or just the video ID. Use official Mount Zion / Damilola Mike-Bamiloye videos only.
+    </p>
+
+    <footer>All films remain on YouTube. GodsAntenna only embeds public official videos for viewing.</footer>
+    <footer>
+        <div class="wrap footgrid">
+            <div>
+                <strong>GOD'S ANTENNA<p>SPREADING THE WORD!</p></strong>
+            </div>
+            <div>
+                <strong>Call</strong>
+                <p><a href="tel:08028385955">08028385955</a><br><a href="tel:08055554744">08055554744</a></p>
+            </div>
+            <div>
+                <strong>Email</strong>
+                <p><a href="mailto:godsantenna@gmail.com">godsantenna@gmail.com</a></p>
+            </div>
+        </div>
+        <div class="wrap copy"> <b>" Jesus Christ the same yesterday, and to day, and for ever. "  Hebrews 13:8 (KJV)</b></div>
+    </footer>
+  </div>
+
+  <script>
+    // ADD NEW MOVIES HERE.
+    // url can be a full YouTube link or just the 11-character video ID.
+    const movies = [
+      {
+        title: "High Calling (Part 1)",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=Xc8z4miN7-g"
+      },
+      {
+        title: "High Calling (Part 2)",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=0WbvpX8WUCU"
+      },
+      {
+        title: "The Train",
+        studio: "Mount Zion Film Productions",
+        year: "Full Movie",
+        url: "https://www.youtube.com/watch?v=5mFvb62VMkc"
+      },
+      {
+        title: "Under Siege",
+        studio: "Mount Zion Musical Film",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=11FQQv81hDw"
+      },
+      {
+        title: "Back to Eden",
+        studio: "Written by Gloria Bamiloye",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=ZV3JCOIoDG0"
+      },
+      {
+        title: "Recitation",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=0FzSG3eyMnU"
+      },
+      {
+        title: "30 Pieces",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=JEXm0YN70MQ"
+      },
+      {
+        title: "Legion",
+        studio: "Damilola Mike-Bamiloye",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=zJFeVvwTsK0"
+      },
+      {
+        title: "The Wedding Weekend",
+        studio: "Mount Zion / Flaming Sword",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=YjyTss1fyIg"
+      },
+      {
+        title: "Heart Pain",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=PBLE547KrE8"
+      },
+      {
+        title: "Abattoir (Episode 1)",
+        studio: "Mount Zion Series",
+        year: "Latest Series",
+        url: "https://www.youtube.com/watch?v=1wP5nyzzlcE"
+      },
+      {
+        title: "Burning Coles",
+        studio: "Mount Zion Film Productions",
+        year: "Latest",
+        url: "https://www.youtube.com/watch?v=qAg8y-4ZQFU"
+      }
+    ];
+
+    function getYouTubeId(url) {
+      if (!url) return "";
+      const clean = String(url).trim();
+      if (/^[\w-]{11}$/.test(clean)) return clean;
+      const match = clean.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+      return match ? match[1] : "";
+    }
+
+    function thumbUrl(id) {
+      return "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+    }
+
+    function embedUrl(id) {
+      return "https://www.youtube.com/embed/" + id + "?rel=0&modestbranding=1";
+    }
+
+    const player = document.getElementById("player");
+    const titleEl = document.getElementById("playing-title");
+    const metaEl = document.getElementById("playing-meta");
+    const grid = document.getElementById("movie-grid");
+    const search = document.getElementById("search");
+
+    let currentId = "";
+
+    function playMovie(movie) {
+      const id = getYouTubeId(movie.url);
+      if (!id) return;
+      currentId = id;
+      player.src = embedUrl(id);
+      titleEl.textContent = movie.title;
+      metaEl.textContent = movie.studio + " · " + movie.year;
+      document.querySelectorAll(".movie").forEach(function (btn) {
+        btn.classList.toggle("active", btn.dataset.id === id);
+      });
+    }
+
+    function render(list) {
+      grid.innerHTML = "";
+      list.forEach(function (movie) {
+        const id = getYouTubeId(movie.url);
+        const btn = document.createElement("button");
+        btn.className = "movie" + (id === currentId ? " active" : "");
+        btn.dataset.id = id;
+        btn.innerHTML =
+          '<img class="thumb" alt="' + movie.title + '" src="' + thumbUrl(id) + '" />' +
+          '<div class="movie-body"><h3>' + movie.title + '</h3><span>' + movie.studio + '</span></div>';
+        btn.addEventListener("click", function () {
+          playMovie(movie);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    search.addEventListener("input", function () {
+      const q = search.value.toLowerCase();
+      render(movies.filter(function (m) {
+        return (m.title + " " + m.studio + " " + m.year).toLowerCase().indexOf(q) !== -1;
+      }));
+    });
+
+    render(movies);
+    playMovie(movies[0]);
+  </script>
+
+  <button class="chat-toggle" id="chatToggle" type="button" aria-label="Open helper">AI</button>
+    <div class="chat" id="chatPanel">
+        <div class="chat-head">GOD'S ANTENNA AI ASSISTANT · DAVID<small>Ask about church events or new songs...</small></div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="quick">
+            <button type="button" data-ask="Which event is coming up soon?">Events</button>
+            <button type="button" data-ask="Who can i talk to for counselling?">Counsellors</button>
+            <button type="button" data-ask="How to give my tithe or offering?">Tithe</button>
+            <button type="button" data-ask="Weekly Service?">Weekly Services</button>
+            <button type="button" data-ask="Today Open Heaven Topic?">Open Heaven Devotional</button>
+            <button type="button" data-ask="When is 'EBENEZER' concert happening?">EBENEZER CONCERT</button>
+            <button type="button" data-ask="Are there any new songs">Music</button>
+            <button type="button" data-ask="Are there any New Christian Movies that you can recommend for me to watch">New Movies</button>
+        </div>
+        <form class="chat-form" id="chatForm">
+            <input id="chatInput" type="text" placeholder="Ask about church events, previous services, RCCG program, Weekly Services or new songs..." autocomplete="on">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="antenna-app.js"></script>
+
+</body>
+</html>

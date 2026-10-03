@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OUR CONTACTS | GOD'S ANTENNA</title>
+    <link rel="stylesheet" href="antenna-styles.css">
+    <link rel="manifest" href="antenna-manifest.json">
+    <link rel="icon" href="images/antenna-logo.png">
+    <meta name="theme-color" content="#07152b">
+    <meta name="description" content="Welcome to God's Antenna">
+</head>
+<body>
+    <header class="site">
+        <div class="wrap navrow">
+            <a class="brand" href="antenna-index.html">
+                <img src="images/antenna-logo.png" alt="GOD'S ANTENNA LOGO">
+                <div>
+                    <b><small>GOD'S ANTENNA</small></b>
+                </div>
+            </a>
+            <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="antenna-index.html">Home</a></li><li><a href="antenna-about.html">About Us</a></li><li><a href="antenna-contact.html" class="active">Contact Us</a></li><li><a href="antenna-platforms.html">Our Platforms</a></li><li><a href="antenna-movies.html"><b>MOVIES</b></a></li><li><a href="antenna-openheavens.html">OPEN HEAVENS DEVOTIONAL</a></li><li><a href="antenna-games.html">GAMES</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section>
+        <div class="wrap contact-grid">
+            <div>
+                <p class="eyebrow">Contact us today, Tomorrow might be too late!</p>
+                <h1 class="section-title">Talk to a counsellor</h1>
+                <p class="muted">He / She will help you become who God has ordained you to be by praying with you and guiding you in the process of being born-again. May God show you his unmeritable Love!</p>
+                <ul class="info-list">
+                    <li>
+                        <div>Phone numbers</div>
+                        <div class="phone"><a href="tel:08028385955">08028385955</a></div>
+                        <div class="phone"><a href="tel:08055554744">08055554744</a></div>
+                    </li>
+                    <li>
+                        <div>Email</div>
+                        <div><a href="mailto:2gep.bd@gmail.com">godsantenna@gmail.com</a></div>
+                    </li>
+                    <li>
+                        <div>Online Giving</div>
+                        <div><a href="http://fs-technical-hymn.base44.app" target="_blank" rel="noopener">fs-technical-hymn.base44.app</a></div>
+                        <p class="ask">Give tithe & offering conveniently, anytime, anywhere.</p>
+                    </li>
+                    <li>
+                        <a class="btn btn-navy" href="tel:08028385955">Call 080</a>
+                        <a class="btn btn-outline" href="tel:08055554744">Call 080</a>
+                    </li>
+                </ul>
+            </div>
+            <article class="card">
+                <h3>Send a comment</h3>
+                <p class="ask">This opens your email to churchmail@gmail.com. For a faster reply about stock, call the numbers.</p>
+                <form onsubmit="event.preventDefault(); window.location.href='mailto:2godsantenna@gmail.com?subject=Antenna%20enquiry';">
+                    <label for="Comment">Comment</label><br>
+                    <textarea id="Comment" rows="8" style="width:100%;margin:10px 0;padding:12px;border-radius:14px;border:1px solid rgba(7,21,43,.12);font:inherit"></textarea>
+                    <button class="btn btn-gold" type="submit">Email godsantenna@gmail.com</button>
+                </form>
+            </article>
+        </div>
+    </section>
+    <section style="padding-top:0">
+        <div class="wrap">
+            <h2 class="section-title">What to tell our agent</h2>
+            <div class="cards">
+                <article class="card"><h3>1. Colour</h3><p>White/maroon, mint green, brown, cream, sky blue, pink or printed design.</p></article>
+                <article class="card"><h3>2. Size</h3><p>Small, medium, large, or a matching set. Mention if it is for a child, one adult or a family.</p></article>
+                <article class="card"><h3>3. How many</h3><p>One box or several. We can advise if a set is a better value for your trip.</p></article>
+                <article class="card"><h3>4. Your city</h3><p>Tell us where you are so the agent can explain pickup or delivery options available at that time.</p></article>
+            </div>
+        </div>
+    </section>
+
+
+        <footer>
+        <div class="wrap footgrid">
+            <div>
+                <strong>GOD'S ANTENNA<p>SPREADING THE WORD!</p></strong>
+            </div>
+            <div>
+                <strong>Call</strong>
+                <p><a href="tel:08028385955">08028385955</a><br><a href="tel:08055554744">08055554744</a></p>
+            </div>
+            <div>
+                <strong>Email</strong>
+                <p><a href="mailto:godsantenna@gmail.com">godsantenna@gmail.com</a></p>
+            </div>
+        </div>
+        <div class="wrap copy"> <b>" Jesus Christ the same yesterday, and to day, and for ever. "  Hebrews 13:8 (KJV)</b></div>
+    </footer>
+
+
+    <button class="chat-toggle" id="chatToggle" type="button" aria-label="Open helper">AI</button>
+    <div class="chat" id="chatPanel">
+        <div class="chat-head">GOD'S ANTENNA AI ASSISTANT · DAVID<small>Ask about church events or new songs...</small></div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="quick">
+            <button type="button" data-ask="Which event is coming up soon?">Events</button>
+            <button type="button" data-ask="Who can i talk to for counselling?">Counsellors</button>
+            <button type="button" data-ask="How to give my tithe or offering?">Tithe</button>
+            <button type="button" data-ask="Weekly Service?">Weekly Services</button>
+            <button type="button" data-ask="Today Open Heaven Topic?">Open Heaven Devotional</button>
+            <button type="button" data-ask="When is 'EBENEZER' concert happening?">EBENEZER CONCERT</button>
+            <button type="button" data-ask="Are there any new songs">Music</button>
+            <button type="button" data-ask="Are there any New Christian Movies that you can recommend for me to watch">New Movies</button>
+        </div>
+        <form class="chat-form" id="chatForm">
+            <input id="chatInput" type="text" placeholder="Ask about church events, previous services, RCCG program, Weekly Services or new songs..." autocomplete="on">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="antenna-app.js"></script>
+
+</body>
+</html>

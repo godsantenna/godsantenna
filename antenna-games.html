@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMES | GOD'S ANTENNA</title>
+    <link rel="stylesheet" href="antenna-styles.css">
+    <link rel="manifest" href="antenna-manifest.json">
+    <link rel="icon" href="images/antenna-logo.png">
+    <meta name="theme-color" content="#07152b">
+    <meta name="description" content="Welcome to God's Antenna">
+</head>
+<body>
+    <header class="site">
+        <div class="wrap navrow">
+            <a class="brand" href="antenna-index.html">
+                <img src="images/antenna-logo.png" alt="GOD'S ANTENNA LOGO">
+                <div>
+                    <b><small>GOD'S ANTENNA</small></b>
+                </div>
+            </a>
+            <button class="menu-btn" type="button" aria-label="Open menu">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="antenna-index.html">Home</a></li><li><a href="antenna-about.html">About Us</a></li><li><a href="antenna-contact.html">Contact Us</a></li><li><a href="antenna-platforms.html">Our Platforms</a></li><li><a href="antenna-movies.html"><b>MOVIES</b></a></li><li><a href="antenna-openheavens.html">OPEN HEAVENS DEVOTIONAL</a></li><li><a href="antenna-games.html" class="active">GAMES</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<section id="gp">
+  <h2 style="margin:0 0 12px">🎮 Games</h2>
+  <div class="menu"></div>
+  <div id="gp-box"></div>
+</section>
+
+<script>
+(function(){
+const G=[],add=(n,f)=>G.push([n,f]);
+let stop=null;
+
+/* Each game: add('Name', box => { ...build UI in box...; return optionalCleanup }) */
+
+add('🔢 Number Guess',b=>{
+  b.innerHTML='<p class=i>Guess a number 1–100</p><input type=number><br><button class=go>Guess</button>';
+  const i=b.querySelector('.i'),v=b.querySelector('input');let n=1+Math.random()*100|0,t=0;
+  b.querySelector('.go').onclick=()=>{const x=+v.value;if(!x)return;t++;
+    i.textContent=x==n?`🎉 Got it in ${t} tries!`:x<n?'Higher ⬆️':'Lower ⬇️'};
+});
+
+add('✊ Rock Paper Scissors',b=>{
+  const E=['✊','✋','✌️'];let w=0,l=0;
+  b.innerHTML='<p class=i>Pick one</p><div class=row style="display:flex;gap:10px;justify-content:center"></div><p class=s>Wins 0 · Losses 0</p>';
+  const i=b.querySelector('.i'),s=b.querySelector('.s');
+  E.forEach((e,p)=>{const k=document.createElement('button');k.textContent=e;k.style.fontSize='36px';
+    k.onclick=()=>{const c=Math.random()*3|0,r=(p-c+3)%3;if(r==1)w++;if(r==2)l++;
+      i.textContent=`You ${e} vs ${E[c]} — ${['Draw','You win!','You lose'][r]}`;s.textContent=`Wins ${w} · Losses ${l}`};
+    b.querySelector('.row').appendChild(k)});
+});
+
+add('🔨 Whack-a-Mole',b=>{
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(3,1fr)"></div>';
+  const i=b.querySelector('.i'),g=b.querySelector('.g'),c=[];let s=0,t=20,m=-1;
+  const info=()=>i.textContent=`Score: ${s} · Time: ${t}`;info();
+  for(let k=0;k<9;k++){const e=document.createElement('button');
+    e.onclick=()=>{if(t>0&&k==m){s++;m=-1;e.textContent='';info()}};g.appendChild(e);c.push(e)}
+  const a=setInterval(()=>{if(t<=0)return;c.forEach(e=>e.textContent='');m=Math.random()*9|0;c[m].textContent='🐹'},650);
+  const z=setInterval(()=>{if(t>0)t--;info();if(t==0){c.forEach(e=>e.textContent='');i.textContent='Time up! Score: '+s}},1000);
+  return()=>{clearInterval(a);clearInterval(z)};
+});
+
+add('⚡ Reaction Test',b=>{
+  b.innerHTML='<button style="width:100%;height:150px;font-size:22px">Click to start</button>';
+  const r=b.firstChild;let st=0,t0,to;
+  r.onclick=()=>{
+    if(st==0){st=1;r.textContent='Wait for green…';r.style.background='#b91c1c';
+      to=setTimeout(()=>{st=2;t0=Date.now();r.textContent='CLICK!';r.style.background='#16a34a'},1000+Math.random()*2500)}
+    else if(st==1){clearTimeout(to);st=0;r.textContent='Too early! Click to retry';r.style.background=''}
+    else{st=0;r.textContent=(Date.now()-t0)+' ms — click to retry';r.style.background=''}
+  };
+  return()=>clearTimeout(to);
+});
+
+add('👆 Click Speed',b=>{
+  b.innerHTML='<p class=i>Click as fast as you can for 10s!</p><button style="width:100%;height:140px;font-size:22px">Click!</button>';
+  const i=b.querySelector('.i'),r=b.querySelector('button');let n=0,t=0,z=0;
+  r.onclick=()=>{if(t<0)return;
+    if(!z){n=0;t=10;z=setInterval(()=>{t--;
+      if(t<=0){clearInterval(z);z=0;i.textContent=`Done! ${n} clicks (${n/10}/sec)`;t=-1;setTimeout(()=>t=0,800);return}
+      i.textContent=`${t}s · ${n} clicks`},1000)}
+    n++;i.textContent=`${t}s · ${n} clicks`};
+  return()=>clearInterval(z);
+});
+
+add('🎵 Simon Says',b=>{
+  const C=['#ef4444','#22c55e','#3b82f6','#eab308'];let seq=[],pos=0,lock=1,T=[];
+  b.innerHTML='<p class=i>Press Start</p><div class=g style="grid-template-columns:1fr 1fr"></div><button class=go>Start</button>';
+  const i=b.querySelector('.i'),g=b.querySelector('.g');
+  const bt=C.map((c,k)=>{const e=document.createElement('button');
+    e.style.cssText=`background:${c};opacity:.4;aspect-ratio:auto;height:90px`;e.onclick=()=>press(k);g.appendChild(e);return e});
+  const fl=k=>{bt[k].style.opacity=1;T.push(setTimeout(()=>bt[k].style.opacity=.4,300))};
+  const nx=()=>{seq.push(Math.random()*4|0);pos=0;lock=1;i.textContent='Watch…';
+    seq.forEach((c,k)=>T.push(setTimeout(()=>fl(c),700*(k+1))));
+    T.push(setTimeout(()=>{lock=0;i.textContent='Your turn'},700*seq.length+400))};
+  const press=k=>{if(lock)return;fl(k);
+    if(k!=seq[pos]){lock=1;i.textContent='Game over! Score: '+(seq.length-1);return}
+    if(++pos==seq.length){lock=1;i.textContent='Round '+seq.length+' ✅';T.push(setTimeout(nx,900))}};
+  b.querySelector('.go').onclick=()=>{T.forEach(clearTimeout);seq=[];nx()};
+  return()=>T.forEach(clearTimeout);
+});
+
+add('➕ Math Quiz',b=>{
+  b.innerHTML='<p class=i></p><input type=number><br><button class=go>Answer</button>';
+  const i=b.querySelector('.i'),v=b.querySelector('input');let q=0,sc=0,ans,done=0;
+  const nx=()=>{if(q==10){done=1;i.textContent=`Finished! Score ${sc}/10`;v.style.display='none';return}
+    q++;const x=2+Math.random()*12|0,y=2+Math.random()*12|0,o=Math.random()*3|0;
+    ans=[x+y,x*y,x-y][o];i.textContent=`Q${q}: ${x} ${'+×-'[o]} ${y} = ?`;v.value=''};
+  b.querySelector('.go').onclick=()=>{if(done||v.value==='')return;if(+v.value==ans)sc++;nx()};
+  nx();
+});
+
+add('🔤 Word Scramble',b=>{
+  const W=['ANTENNA','GOSPEL','WEBSITE','KEYBOARD','JAVASCRIPT','ROCKET','GARDEN','BROWSER','PLANET','MUSIC','ORANGE','BRIDGE','STONE','BONE','SORE','TOOTH','GOOGLE','MAINTAIN','ARRAY','CONCAVE','CONVEX'];
+  b.innerHTML='<p class=i style="font-size:30px;letter-spacing:4px"></p><input><br><button class=go>Check</button><p class=s></p>';
+  const i=b.querySelector('.i'),v=b.querySelector('input'),s=b.querySelector('.s');let w,sc=0;
+  const nx=()=>{w=W[Math.random()*W.length|0];let a;do a=[...w].sort(()=>Math.random()-.5).join('');while(a==w);i.textContent=a;v.value=''};
+  b.querySelector('.go').onclick=()=>{if(v.value.toUpperCase()==w){sc++;s.textContent='✅ Correct! Score '+sc;nx()}else s.textContent='❌ Try again'};
+  nx();
+});
+
+add('💡 Lights Out',b=>{
+  b.innerHTML='<p class=i>Turn all the lights off</p><div class=g style="grid-template-columns:repeat(5,1fr)"></div>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i'),d=Array(25).fill(0),c=[];
+  const tg=k=>{const x=k%5,y=k/5|0;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([a,e])=>{const X=x+a,Y=y+e;if(X>=0&&X<5&&Y>=0&&Y<5)d[Y*5+X]^=1})};
+  const p=()=>{d.forEach((v,k)=>c[k].style.background=v?'#eab308':'');if(!d.some(Boolean))i.textContent='🎉 You solved it!'};
+  for(let k=0;k<25;k++){const e=document.createElement('button');e.onclick=()=>{tg(k);p()};g.appendChild(e);c.push(e)}
+  for(let k=0;k<12;k++)tg(Math.random()*25|0);
+  if(!d.some(Boolean))tg(12);
+  p();
+});
+
+add('🎴 Higher or Lower',b=>{
+  b.innerHTML='<p class=n style="font-size:64px;margin:8px"></p><p class=i>Will the next number be higher?</p><button class=h>⬆️ Higher</button> <button class=l>⬇️ Lower</button>';
+  const n=b.querySelector('.n'),i=b.querySelector('.i');let x=1+Math.random()*100|0,st=0;n.textContent=x;
+  const go=up=>{let y;do y=1+Math.random()*100|0;while(y==x);const ok=up?y>x:y<x;ok?st++:st=0;
+    i.textContent=(ok?'✅':'❌')+' Streak: '+st;x=y;n.textContent=x};
+  b.querySelector('.h').onclick=()=>go(1);b.querySelector('.l').onclick=()=>go(0);
+});
+
+add('🔢 2048',b=>{
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(4,1fr);touch-action:none"></div><button class=go>New game</button>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i'),cs=[];let d,sc;
+  const col={2:'#475569',4:'#0e7490',8:'#2563eb',16:'#7c3aed',32:'#c026d3',64:'#db2777',128:'#ea580c',256:'#d97706',512:'#ca8a04',1024:'#65a30d'};
+  for(let k=0;k<16;k++){const e=document.createElement('button');e.style.fontSize='22px';g.appendChild(e);cs.push(e)}
+  const spawn=()=>{const e=[];d.forEach((v,k)=>v||e.push(k));if(e.length)d[e[Math.random()*e.length|0]]=Math.random()<.9?2:4};
+  const draw=()=>{d.forEach((v,k)=>{cs[k].textContent=v||'';cs[k].style.background=v?(col[v]||'#16a34a'):''});i.textContent='Score: '+sc};
+  const line=a=>{a=a.filter(Boolean);for(let k=0;k<a.length-1;k++)if(a[k]==a[k+1]){a[k]*=2;sc+=a[k];a.splice(k+1,1)}while(a.length<4)a.push(0);return a};
+  const mv=dir=>{const o=d.join();
+    for(let r=0;r<4;r++){const ix=[0,1,2,3].map(c=>dir<2?r*4+c:c*4+r);if(dir%2)ix.reverse();
+      const l=line(ix.map(k=>d[k]));ix.forEach((k,j)=>d[k]=l[j])}
+    if(d.join()!=o)spawn();draw()};
+  const kd=e=>{const m={ArrowLeft:0,ArrowRight:1,ArrowUp:2,ArrowDown:3}[e.key];if(m!=null){e.preventDefault();mv(m)}};
+  const nw=()=>{d=Array(16).fill(0);sc=0;spawn();spawn();draw()};
+  document.addEventListener('keydown',kd);
+  let x,y;
+  g.addEventListener('touchstart',e=>{x=e.touches[0].clientX;y=e.touches[0].clientY},{passive:true});
+  g.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-x,dy=e.changedTouches[0].clientY-y;
+    mv(Math.abs(dx)>Math.abs(dy)?(dx>0?1:0):(dy>0?3:2))});
+  b.querySelector('.go').onclick=nw;nw();
+  return()=>document.removeEventListener('keydown',kd);
+});
+
+add('🧩 Sliding Puzzle',b=>{
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(3,1fr)"></div><button class=go>Shuffle</button>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i'),cs=[];let t=[1,2,3,4,5,6,7,8,0],m=0;
+  const sw=k=>{const z=t.indexOf(0);if(Math.abs(k%3-z%3)+Math.abs((k/3|0)-(z/3|0))==1){[t[z],t[k]]=[t[k],t[z]];return 1}};
+  const draw=()=>{t.forEach((v,k)=>{cs[k].textContent=v||'';cs[k].style.visibility=v?'visible':'hidden'});
+    i.textContent=t.join()=='1,2,3,4,5,6,7,8,0'&&m?`🎉 Solved in ${m} moves!`:'Moves: '+m};
+  for(let k=0;k<9;k++){const e=document.createElement('button');e.onclick=()=>{if(sw(k)){m++;draw()}};g.appendChild(e);cs.push(e)}
+  const shuf=()=>{for(let n=0;n<200;n++)sw(Math.random()*9|0);m=0;draw()};
+  b.querySelector('.go').onclick=shuf;shuf();
+});
+
+add('🔠 Hangman',b=>{
+  const W=['JAVASCRIPT','KEYBOARD','ANTENNA','GARDEN','ROCKET','BROWSER','PLANET','BRIDGE','MUSIC','ORANGE','WEBSITE','MOUNTAIN'];
+  b.innerHTML='<p class=i style="font-size:28px;letter-spacing:5px"></p><p class=s></p><div class=k style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center"></div><button class=go>New word</button>';
+  const i=b.querySelector('.i'),s=b.querySelector('.s'),ks=[];let w,got,l;
+  const show=()=>{i.textContent=[...w].map(c=>got.has(c)?c:'_').join(' ');s.textContent='❤️'.repeat(l);
+    if([...w].every(c=>got.has(c))){s.textContent='🎉 You won!';ks.forEach(x=>x.disabled=true)}
+    else if(!l){i.textContent=w;s.textContent='💀 Game over';ks.forEach(x=>x.disabled=true)}};
+  for(const c of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'){const e=document.createElement('button');e.textContent=c;e.style.padding='6px 9px';
+    e.onclick=()=>{e.disabled=true;w.includes(c)?got.add(c):l--;show()};b.querySelector('.k').appendChild(e);ks.push(e)}
+  const nw=()=>{w=W[Math.random()*W.length|0];got=new Set;l=6;ks.forEach(x=>x.disabled=false);show()};
+  b.querySelector('.go').onclick=nw;nw();
+});
+
+add('🎨 Color Match',b=>{
+  const N=['RED','GREEN','BLUE','YELLOW'],C=['#ef4444','#22c55e','#3b82f6','#eab308'];
+  b.innerHTML='<p class=i>Tap the INK colour, not the word!</p><p class=w style="font-size:44px;font-weight:bold;margin:10px"></p><div class=g style="grid-template-columns:1fr 1fr"></div>';
+  const i=b.querySelector('.i'),w=b.querySelector('.w');let s=0,t=20,ink,z;
+  const nx=()=>{w.textContent=N[Math.random()*4|0];ink=Math.random()*4|0;w.style.color=C[ink]};
+  N.forEach((n,k)=>{const e=document.createElement('button');e.textContent=n;e.style.cssText='aspect-ratio:auto;height:60px;font-size:18px';
+    e.onclick=()=>{if(t<=0)return;if(k==ink)s++;else s=Math.max(0,s-1);i.textContent=`Score ${s} · ${t}s`;nx()};b.querySelector('.g').appendChild(e)});
+  nx();
+  z=setInterval(()=>{t--;i.textContent=`Score ${s} · ${t}s`;if(t<=0){clearInterval(z);w.textContent='';i.textContent='Time up! Score: '+s}},1000);
+  return()=>clearInterval(z);
+});
+
+add('⌨️ Typing Test',b=>{
+  const S=['the quick brown fox jumps over the lazy dog','practice makes progress every single day','build something great and share it with the world','a journey of a thousand miles begins with one step'];
+  b.innerHTML='<p class=i style="font-size:18px"></p><input class=v style="width:100%"><p class=s>Start typing to begin</p>';
+  const i=b.querySelector('.i'),v=b.querySelector('.v'),s=b.querySelector('.s');const p=S[Math.random()*S.length|0];let t0=0,done=0;
+  i.textContent=p;
+  v.oninput=()=>{if(done)return;if(!t0)t0=Date.now();
+    v.style.borderColor=p.startsWith(v.value)?'#22c55e':'#ef4444';
+    if(v.value==p){done=1;const m=(Date.now()-t0)/60000;s.textContent=`🎉 ${Math.round(p.split(' ').length/m)} WPM`}};
+});
+
+add('💣 Minesweeper',b=>{
+  const N=8;
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(8,1fr);max-width:320px"></div><button class=go>New game</button> <button class=fl>🚩 Flag: off</button>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i'),cs=[];let m,o,f,over,fm=0;
+  const nb=k=>{const r=[],x=k%N,y=k/N|0;for(let a=-1;a<2;a++)for(let e=-1;e<2;e++){const X=x+a,Y=y+e;if((a||e)&&X>=0&&X<N&&Y>=0&&Y<N)r.push(Y*N+X)}return r};
+  const cnt=k=>nb(k).filter(j=>m[j]).length;
+  const draw=()=>{cs.forEach((e,k)=>{e.textContent=o[k]?(m[k]?'💣':cnt(k)||''):(f[k]?'🚩':'');e.style.background=o[k]?'#0f172a':''});
+    if(!over&&m.every((v,k)=>v||o[k])){over=1;i.textContent='🎉 You cleared it!'}};
+  const open=k=>{if(o[k]||f[k])return;o[k]=1;if(!m[k])if(!cnt(k))nb(k).forEach(open)};
+  for(let k=0;k<N*N;k++){const e=document.createElement('button');e.style.cssText='font-size:15px;padding:0';
+    e.onclick=()=>{if(over)return;if(fm){if(!o[k])f[k]=!f[k]}else{open(k);
+      if(m[k]){over=1;m.forEach((v,j)=>v&&(o[j]=1));i.textContent='💥 Boom! Game over'}}draw()};g.appendChild(e);cs.push(e)}
+  const nw=()=>{m=Array(N*N).fill(0);o=[];f=[];over=0;let n=0;while(n<10){const k=Math.random()*64|0;if(!m[k]){m[k]=1;n++}}i.textContent='Find all safe squares';draw()};
+  b.querySelector('.go').onclick=nw;
+  b.querySelector('.fl').onclick=e=>{fm=!fm;e.target.textContent='🚩 Flag: '+(fm?'on':'off')};
+  nw();
+});
+
+add('🧠 Quiz',b=>{
+  const Q=[['Capital of Nigeria?',['Abuja','Lagos','Kano','Accra'],0],['Largest continent?',['Africa','Asia','Europe','Australia'],1],
+    ['Planet closest to the Sun?',['Venus','Earth','Mercury','Mars'],2],['Days in a leap year?',['365','364','366','360'],2],
+    ['Chemical symbol for water?',['CO2','H2O','O2','NaCl'],1],['Largest ocean?',['Atlantic','Indian','Arctic','Pacific'],3],
+    ['Longest river in Africa?',['Nile','Congo','Niger','Zambezi'],0],['7 × 8 = ?',['54','56','58','64'],1]];
+  b.innerHTML='<p class=i></p><div class=o style="display:grid;gap:8px"></div>';
+  const i=b.querySelector('.i'),o=b.querySelector('.o');let q=0,sc=0;
+  const nx=()=>{o.innerHTML='';if(q==Q.length){i.textContent=`Finished! Score ${sc}/${Q.length}`;return}
+    i.textContent=`Q${q+1}/${Q.length}: ${Q[q][0]}`;
+    Q[q][1].forEach((t,k)=>{const e=document.createElement('button');e.textContent=t;
+      e.onclick=()=>{const ok=k==Q[q][2];if(ok)sc++;e.style.background=ok?'#16a34a':'#b91c1c';
+        o.querySelectorAll('button').forEach(x=>x.disabled=true);q++;setTimeout(nx,700)};o.appendChild(e)})};
+  nx();
+});
+
+add('🔟 Tap 1–16',b=>{
+  b.innerHTML='<p class=i>Tap the numbers in order!</p><div class=g style="grid-template-columns:repeat(4,1fr)"></div>';
+  const i=b.querySelector('.i');let n=1,t0=0;
+  [...Array(16)].map((_,k)=>k+1).sort(()=>Math.random()-.5).forEach(v=>{
+    const e=document.createElement('button');e.textContent=v;
+    e.onclick=()=>{if(v!=n)return;if(n==1)t0=Date.now();e.style.background='#16a34a';e.disabled=true;
+      if(n==16)i.textContent=`🎉 Done in ${((Date.now()-t0)/1000).toFixed(1)}s`;else i.textContent='Next: '+(n+1);n++};
+    b.querySelector('.g').appendChild(e)});
+});
+
+add('🎈 Balloon Pop',b=>{
+  b.innerHTML='<p class=i></p><div class=a style="position:relative;height:320px;overflow:hidden;border:2px solid #334155;border-radius:10px"></div><button class=go>Restart</button>';
+  const i=b.querySelector('.i'),a=b.querySelector('.a');let s=0,miss=0,T=[],iv;
+  const info=()=>i.textContent=`Popped: ${s} · Missed: ${miss}/5`;
+  const spawn=()=>{if(miss>=5)return;const e=document.createElement('button');e.textContent='🎈';
+    e.style.cssText=`position:absolute;left:${Math.random()*80}%;bottom:-50px;border:0;background:none;font-size:34px;padding:0;transition:bottom 4s linear`;
+    a.appendChild(e);let gone=0;
+    e.onclick=()=>{if(miss>=5)return;gone=1;s++;e.remove();info()};
+    T.push(setTimeout(()=>e.style.bottom='330px',30));
+    T.push(setTimeout(()=>{if(!gone){gone=1;e.remove();miss++;info();if(miss>=5){clearInterval(iv);i.textContent='Game over! Popped: '+s}}},4100))};
+  const nw=()=>{clearInterval(iv);T.forEach(clearTimeout);T=[];a.innerHTML='';s=0;miss=0;info();iv=setInterval(spawn,800)};
+  b.querySelector('.go').onclick=nw;nw();
+  return()=>{clearInterval(iv);T.forEach(clearTimeout)};
+});
+
+add('🎲 Dice Duel',b=>{
+  b.innerHTML='<p class=i>Roll higher than the computer!</p><p class=r style="font-size:40px;margin:10px"></p><p class=s>You 0 · Computer 0</p><button class=go>Roll</button>';
+  const r=b.querySelector('.r'),i=b.querySelector('.i'),s=b.querySelector('.s'),F=['⚀','⚁','⚂','⚃','⚄','⚅'];let y=0,c=0;
+  b.querySelector('.go').onclick=()=>{
+    const a=[Math.random()*6|0,Math.random()*6|0],e=[Math.random()*6|0,Math.random()*6|0];
+    const A=a[0]+a[1],E=e[0]+e[1];
+    r.textContent=`${F[a[0]]}${F[a[1]]}  vs  ${F[e[0]]}${F[e[1]]}`;
+    if(A>E){y++;i.textContent='You win this round!'}else if(E>A){c++;i.textContent='Computer wins this round'}else i.textContent='Tie!';
+    s.textContent=`You ${y} · Computer ${c}`};
+});
+
+add('❌ Tic-Tac-Toe',b=>{
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(3,1fr)"></div><button class=go>New game</button>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i'),cs=[],L=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];let d,end;
+  const win=()=>{for(const l of L)if(d[l[0]]&&d[l[0]]==d[l[1]]&&d[l[0]]==d[l[2]])return d[l[0]];return d.every(Boolean)?'draw':null};
+  const draw=()=>cs.forEach((e,k)=>e.textContent=d[k]);
+  const fin=()=>{const w=win();if(!w)return 0;end=1;i.textContent=w=='draw'?"It's a draw!":w=='X'?'🎉 You win!':'Computer wins!';return 1};
+  const pick=()=>{for(const t of ['O','X'])for(let k=0;k<9;k++)if(!d[k]){d[k]=t;const w=win()==t;d[k]='';if(w)return k}
+    if(!d[4])return 4;const f=[];d.forEach((v,k)=>v||f.push(k));return f[Math.random()*f.length|0]};
+  for(let k=0;k<9;k++){const e=document.createElement('button');
+    e.onclick=()=>{if(end||d[k])return;d[k]='X';draw();if(fin())return;d[pick()]='O';draw();fin()};g.appendChild(e);cs.push(e)}
+  const nw=()=>{d=Array(9).fill('');end=0;i.textContent='Your turn (X)';draw()};
+  b.querySelector('.go').onclick=nw;nw();
+});
+
+add('🃏 Memory Match',b=>{
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(4,1fr)"></div><button class=go>New game</button>';
+  const g=b.querySelector('.g'),i=b.querySelector('.i');let c,f,lock,m,p;
+  const nw=()=>{const E=['🐶','🐱','🦊','🐼','🐸','🦁'];c=E.concat(E).sort(()=>Math.random()-.5);f=null;lock=0;m=0;p=0;
+    i.textContent='Moves: 0';g.innerHTML='';
+    c.forEach((v,k)=>{const e=document.createElement('button');e.textContent='?';
+      e.onclick=()=>{if(lock||e.dataset.u)return;e.dataset.u=1;e.textContent=v;e.style.background='#2563eb';
+        if(!f){f={e,k};return}
+        m++;i.textContent='Moves: '+m;
+        if(c[f.k]==v){f.e.style.background=e.style.background='#16a34a';f=null;if(++p==6)i.textContent='🎉 Won in '+m+' moves!'}
+        else{lock=1;const a=f.e;f=null;setTimeout(()=>{a.textContent=e.textContent='?';a.style.background=e.style.background='';delete a.dataset.u;delete e.dataset.u;lock=0},700)}};
+      g.appendChild(e)})};
+  b.querySelector('.go').onclick=nw;nw();
+});
+
+add('🐍 Snake',b=>{
+  b.innerHTML='<p class=i></p><canvas width=300 height=300 style="background:#020617;border:2px solid #334155;border-radius:10px;max-width:100%;touch-action:none"></canvas><div style="display:grid;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center;margin-top:10px"><span></span><button data-d="0,-1">▲</button><span></span><button data-d="-1,0">◀</button><button data-d="0,1">▼</button><button data-d="1,0">▶</button></div><button class=go>Restart</button>';
+  const i=b.querySelector('.i'),cv=b.querySelector('canvas'),x=cv.getContext('2d');let sn,dir,nd,f,sc,T;
+  const put=()=>{do f={x:Math.random()*15|0,y:Math.random()*15|0};while(sn.some(s=>s.x==f.x&&s.y==f.y))};
+  const draw=()=>{x.fillStyle='#020617';x.fillRect(0,0,300,300);x.fillStyle='#ef4444';x.fillRect(f.x*20+2,f.y*20+2,16,16);
+    sn.forEach((s,k)=>{x.fillStyle=k?'#22c55e':'#86efac';x.fillRect(s.x*20+1,s.y*20+1,18,18)})};
+  const step=()=>{dir=nd;const h={x:sn[0].x+dir.x,y:sn[0].y+dir.y};
+    if(h.x<0||h.y<0||h.x>14||h.y>14||sn.some(s=>s.x==h.x&&s.y==h.y)){clearInterval(T);i.textContent='Game over! Score: '+sc;return}
+    sn.unshift(h);if(h.x==f.x&&h.y==f.y){sc++;i.textContent='Score: '+sc;put()}else sn.pop();draw()};
+  const sd=(a,c)=>{if(a!=-dir.x||c!=-dir.y)nd={x:a,y:c}};
+  const nw=()=>{clearInterval(T);sn=[{x:7,y:7},{x:6,y:7},{x:5,y:7}];dir=nd={x:1,y:0};sc=0;put();i.textContent='Score: 0';draw();T=setInterval(step,130)};
+  const kd=e=>{const m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];if(m){e.preventDefault();sd(m[0],m[1])}};
+  document.addEventListener('keydown',kd);
+  b.querySelectorAll('[data-d]').forEach(e=>e.onclick=()=>{const d=e.dataset.d.split(',');sd(+d[0],+d[1])});
+  let tx,ty;cv.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+  cv.addEventListener('touchend',e=>{const a=e.changedTouches[0].clientX-tx,c=e.changedTouches[0].clientY-ty;
+    Math.abs(a)>Math.abs(c)?sd(a>0?1:-1,0):sd(0,c>0?1:-1)});
+  b.querySelector('.go').onclick=nw;nw();
+  return()=>{clearInterval(T);document.removeEventListener('keydown',kd)};
+});
+
+add('👀 Odd One Out',b=>{
+  const P=[['😀','😃'],['🍎','🍅'],['🐶','🐺'],['🌕','🌝'],['🔵','🟣'],['⭐','🌟'],['😊','🙂']];
+  b.innerHTML='<p class=i></p><div class=g style="grid-template-columns:repeat(5,1fr)"></div>';
+  const i=b.querySelector('.i'),g=b.querySelector('.g'),cs=[];let s=0,t=30,odd,z;
+  const info=()=>i.textContent=`Score ${s} · ${t}s`;
+  const nx=()=>{const p=P[Math.random()*P.length|0];odd=Math.random()*25|0;cs.forEach((e,k)=>e.textContent=k==odd?p[1]:p[0])};
+  for(let k=0;k<25;k++){const e=document.createElement('button');e.style.fontSize='22px';
+    e.onclick=()=>{if(t<=0)return;k==odd?s++:s=Math.max(0,s-1);info();nx()};g.appendChild(e);cs.push(e)}
+  nx();info();
+  z=setInterval(()=>{t--;info();if(t<=0){clearInterval(z);i.textContent='Time up! Score: '+s}},1000);
+  return()=>clearInterval(z);
+});
+
+add('🧠 Number Memory',b=>{
+  b.innerHTML='<p class=i>Memorize the number</p><p class=n style="font-size:38px;letter-spacing:4px;margin:8px;min-height:46px"></p><input class=v inputmode=numeric style="display:none"><br><button class=go>Start</button>';
+  const i=b.querySelector('.i'),n=b.querySelector('.n'),v=b.querySelector('.v'),bt=b.querySelector('.go');let L=3,num,to,mode=0;
+  bt.onclick=()=>{
+    if(!mode){num=String(1+Math.random()*8|0);while(num.length<L)num+=Math.random()*10|0;
+      n.textContent=num;i.textContent='Memorize! Level '+(L-2);v.style.display='none';bt.style.display='none';
+      to=setTimeout(()=>{n.textContent='';v.style.display='';v.value='';v.focus();i.textContent='Type the number';bt.textContent='Submit';bt.style.display='';mode=1},1000+L*400)}
+    else{mode=0;v.style.display='none';
+      if(v.value==num){L++;i.textContent='✅ Correct! Next: '+L+' digits';bt.textContent='Next'}
+      else{n.textContent=num;i.textContent='❌ It was '+num+'. You reached level '+(L-2);L=3;bt.textContent='Restart'}}};
+  return()=>clearTimeout(to);
+});
+
+add('🌈 Color Guess',b=>{
+  b.innerHTML='<p class=i></p><p class=c style="font-size:24px;font-weight:bold;margin:8px"></p><div class=g style="grid-template-columns:1fr 1fr"></div>';
+  const i=b.querySelector('.i'),c=b.querySelector('.c'),g=b.querySelector('.g');let s=0,ans,cs=[];
+  const r=()=>Math.random()*256|0;
+  const nx=()=>{const a=cs.map(()=>[r(),r(),r()]);ans=Math.random()*4|0;c.textContent=`rgb(${a[ans].join(', ')})`;
+    cs.forEach((e,k)=>e.style.background=`rgb(${a[k].join(',')})`);i.textContent='Which colour is this? Streak: '+s};
+  for(let k=0;k<4;k++){const e=document.createElement('button');e.style.cssText='aspect-ratio:auto;height:80px';
+    e.onclick=()=>{k==ans?s++:s=0;nx()};g.appendChild(e);cs.push(e)}
+  nx();
+});
+
+add('🔐 Code Breaker',b=>{
+  b.innerHTML='<p class=i>Crack the secret 4-digit code (no repeated digits)</p><input class=v maxlength=4 inputmode=numeric><br><button class=go>Guess</button><div class=h style="margin-top:10px;text-align:left"></div>';
+  const i=b.querySelector('.i'),v=b.querySelector('.v'),h=b.querySelector('.h');let n=0,end=0;
+  const code=[...'0123456789'].sort(()=>Math.random()-.5).slice(0,4).join('');
+  b.querySelector('.go').onclick=()=>{if(end)return;const q=v.value;
+    if(!/^\d{4}$/.test(q)||new Set(q).size<4){i.textContent='Enter 4 different digits';return}
+    n++;let bu=0,co=0;[...q].forEach((d,k)=>{if(d==code[k])bu++;else if(code.includes(d))co++});
+    h.innerHTML+=`<div>${n}. ${q} → ${bu} 🟢 ${co} 🟡</div>`;v.value='';
+    if(bu==4){end=1;i.textContent=`🎉 Cracked in ${n} guesses!`}else i.textContent='🟢 right place · 🟡 wrong place'};
+});
+
+add('🎰 Slot Machine',b=>{
+  const S=['🍒','🍋','🔔','⭐','7️⃣'];
+  b.innerHTML='<p class=i>Coins: 20</p><p class=r style="font-size:48px;margin:10px">🍒🍋🔔</p><p class=s>Each spin costs 1 coin</p><button class=go>Spin</button>';
+  const i=b.querySelector('.i'),r=b.querySelector('.r'),s=b.querySelector('.s');let co=20,busy=0,iv;
+  const rnd=()=>S[Math.random()*5|0];
+  b.querySelector('.go').onclick=()=>{if(busy||co<1){if(co<1)s.textContent='Out of coins! Reload the page to restart.';return}
+    busy=1;co--;i.textContent='Coins: '+co;
+    iv=setInterval(()=>r.textContent=rnd()+rnd()+rnd(),80);
+    setTimeout(()=>{clearInterval(iv);const a=[rnd(),rnd(),rnd()];r.textContent=a.join('');
+      let w=0;if(a[0]==a[1]&&a[1]==a[2])w=a[0]=='7️⃣'?20:10;else if(a[0]==a[1]||a[1]==a[2]||a[0]==a[2])w=2;
+      co+=w;i.textContent='Coins: '+co;s.textContent=w?`🎉 You won ${w} coins!`:'No luck. Try again!';busy=0},900)};
+  return()=>clearInterval(iv);
+});
+
+add('⏱️ Stop at 5.00',b=>{
+  b.innerHTML='<p class=i>Start, then stop exactly at 5 seconds</p><p class=n style="font-size:48px;margin:10px">0.00</p><button class=go style="width:100%;height:90px;font-size:22px">Start</button>';
+  const i=b.querySelector('.i'),n=b.querySelector('.n'),bt=b.querySelector('.go');let run=0,t0,iv;
+  bt.onclick=()=>{
+    if(!run){run=1;t0=Date.now();bt.textContent='STOP';i.textContent='The counter hides after 2 seconds…';
+      iv=setInterval(()=>{const e=(Date.now()-t0)/1000;n.textContent=e<2?e.toFixed(2):'?.??'},30)}
+    else{run=0;clearInterval(iv);const e=(Date.now()-t0)/1000,d=Math.abs(e-5);
+      n.textContent=e.toFixed(2)+'s';i.textContent=`Off by ${d.toFixed(2)}s`+(d<.1?' 🎯 Amazing!':'');bt.textContent='Start'}};
+  return()=>clearInterval(iv);
+});
+
+add('🌍 African Capitals',b=>{
+  const A=[['Nigeria','Abuja'],['Ghana','Accra'],['Kenya','Nairobi'],['Egypt','Cairo'],['Ethiopia','Addis Ababa'],['Tanzania','Dodoma'],['Morocco','Rabat'],['Senegal','Dakar'],['Uganda','Kampala'],['Rwanda','Kigali'],['Zambia','Lusaka'],['Algeria','Algiers'],['Zimbabwe','Harare'],['Mali','Bamako']];
+  b.innerHTML='<p class=i></p><div class=o style="display:grid;gap:8px"></div>';
+  const i=b.querySelector('.i'),o=b.querySelector('.o'),Q=[...A].sort(()=>Math.random()-.5).slice(0,10);let q=0,sc=0;
+  const nx=()=>{o.innerHTML='';if(q==10){i.textContent=`Finished! Score ${sc}/10`;return}
+    const [c,cap]=Q[q];i.textContent=`Q${q+1}/10: What is the capital of ${c}?`;
+    const ops=[cap,...A.filter(a=>a[1]!=cap).sort(()=>Math.random()-.5).slice(0,3).map(a=>a[1])].sort(()=>Math.random()-.5);
+    ops.forEach(t=>{const e=document.createElement('button');e.textContent=t;
+      e.onclick=()=>{const ok=t==cap;if(ok)sc++;e.style.background=ok?'#16a34a':'#b91c1c';
+        o.querySelectorAll('button').forEach(x=>x.disabled=true);q++;setTimeout(nx,700)};o.appendChild(e)})};
+  nx();
+});
+
+/* ---------- Menu ---------- */
+const menu=document.querySelector('#gp .menu'),box=document.getElementById('gp-box');
+G.forEach(([n,f])=>{
+  const e=document.createElement('button');e.textContent=n;
+  e.onclick=()=>{if(stop)stop();menu.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    e.classList.add('on');box.innerHTML='';stop=f(box)};
+  menu.appendChild(e);
+});
+menu.firstChild.click();
+})();
+</script>
+<!-- ===== COPY UNTIL HERE ===== -->
+
+<footer>
+        <div class="wrap footgrid">
+            <div>
+                <strong>GOD'S ANTENNA<p>SPREADING THE WORD!</p></strong>
+            </div>
+            <div>
+                <strong>Call</strong>
+                <p><a href="tel:08028385955">08028385955</a><br><a href="tel:08055554744">08055554744</a></p>
+            </div>
+            <div>
+                <strong>Email</strong>
+                <p><a href="mailto:godsantenna@gmail.com">godsantenna@gmail.com</a></p>
+            </div>
+        </div>
+        <div class="wrap copy"> <b>" Jesus Christ the same yesterday, and to day, and for ever. "  Hebrews 13:8 (KJV)</b></div>
+    </footer>
+
+
+    <button class="chat-toggle" id="chatToggle" type="button" aria-label="Open helper">AI</button>
+    <div class="chat" id="chatPanel">
+        <div class="chat-head">GOD'S ANTENNA AI ASSISTANT · DAVID<small>Ask about church events or new songs...</small></div>
+        <div class="chat-log" id="chatLog"></div>
+        <div class="quick">
+            <button type="button" data-ask="Which event is coming up soon?">Events</button>
+            <button type="button" data-ask="Who can i talk to for counselling?">Counsellors</button>
+            <button type="button" data-ask="How to give my tithe or offering?">Tithe</button>
+            <button type="button" data-ask="Weekly Service?">Weekly Services</button>
+            <button type="button" data-ask="Today Open Heaven Topic?">Open Heaven Devotional</button>
+            <button type="button" data-ask="When is 'EBENEZER' concert happening?">EBENEZER CONCERT</button>
+            <button type="button" data-ask="Are there any new songs">Music</button>
+            <button type="button" data-ask="Are there any New Christian Movies that you can recommend for me to watch">New Movies</button>
+        </div>
+        <form class="chat-form" id="chatForm">
+            <input id="chatInput" type="text" placeholder="Ask about church events, previous services, RCCG program, Weekly Services or new songs..." autocomplete="on">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="antenna-app.js"></script>
+
+</body>
+</html>
